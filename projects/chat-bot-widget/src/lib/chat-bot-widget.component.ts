@@ -16,6 +16,7 @@ import {
   DragDropModule,
   CdkDragMove,
 } from '@angular/cdk/drag-drop';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'lib-chatBotWidget',
@@ -25,6 +26,7 @@ import {
     FormsModule,
     ReactiveFormsModule,
     ChatConversationComponent,
+    HttpClientModule,
     DragDropModule,
   ],
   templateUrl: './chat-bot-widget.component.html',
@@ -52,6 +54,11 @@ export class ChatBotWidgetComponent implements OnInit {
     top?: string;
   } = { bottom: '16px', right: '16px' };
 
+  constructor(
+    private communicationService: CommunicationService,
+    private chatsMessages: ChatsMessagesService,
+    private swalAlertsService: SwalAlertsService
+  ) {}
 
 
   ngOnInit(): void {
@@ -119,7 +126,68 @@ export class ChatBotWidgetComponent implements OnInit {
 
 
   onSubmit() {
-    // this.sendMessage();
+    this.sendMessage();
   }
 
+  sendMessage() {
+    if (this.selectedChatId && this.formChat.valid) {
+      const message = this.formChat.get('request')?.value;
+      this.formChat.reset();
+      this.isUserSendingMessage = true;
+
+      this.communicationService
+        .sendMessage({
+          language: 'español',
+          request: message,
+          email: localStorage.getItem('userEmail') ?? '',
+          session: this.selectedChatId,
+        })
+        .subscribe({
+          next: (response: any) => {
+            this.chatsMessages.updateWhenSendMessage(message, response);
+            this.updateHistorial();
+            this.isUserSendingMessage = false;
+          },
+          error: (err) => {
+            if (err.status === 429) {
+              console.error(err.error.detail);
+              this.swalAlertsService.messageWhitTimerError(err.error.detail);
+            }
+            this.isUserSendingMessage = false;
+          },
+        });
+    } else if (this.formChat.valid) {
+      const message = this.formChat.get('request')?.value;
+      this.formChat.reset();
+      this.isUserSendingMessage = true;
+
+      this.communicationService
+        .sendMessage({
+          language: 'español',
+          request: message,
+          email: localStorage.getItem('userEmail') ?? '',
+          session: '',
+        })
+        .subscribe({
+          next: (response: any) => {
+            this.chatsMessages.updateWhenSendMessage(message, response);
+            this.updateHistorial();
+            this.isUserSendingMessage = false;
+          },
+          error: (err) => {
+            if (err.status === 429) {
+              console.error(err.error.detail);
+              this.swalAlertsService.messageWhitTimerError(err.error.detail);
+            }
+            this.isUserSendingMessage = false;
+          },
+        });
+    }
+  }
+
+  updateHistorial() {
+    this.chatsMessages.getMessages().subscribe((messages) => {
+      this.messages = messages;
+    });
+  }
 }
