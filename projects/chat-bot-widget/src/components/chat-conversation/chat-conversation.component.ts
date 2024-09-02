@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { GroupedMessages, Messages, SessionResponse } from '../../interfaces/chat';
 import { ChatService } from '../../services/chat_Id.service';
 import { ChatsMessagesService } from '../../services/chatsMessages.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
   selector: 'app-chat-conversation',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './chat-conversation.component.html',
-  styleUrl: './chat-conversation.component.css',
 })
 export class ChatConversationComponent implements OnInit {
   @Input() messages: SessionResponse[] = [];
@@ -21,8 +21,8 @@ export class ChatConversationComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private chatsMessages: ChatsMessagesService,
-  ) {}
+    private chatsMessages: ChatsMessagesService
+    ) {}
 
   ngOnInit(): void {
     this.chatService.selectedChatId$.subscribe((chatId) => {
@@ -34,8 +34,6 @@ export class ChatConversationComponent implements OnInit {
           this.messagesGrouped = this.groupMessagesByDate(messages);
       });
     });
-
-
   }
 
   groupMessagesByDate(messagesOriginal: SessionResponse[]): GroupedMessages[] {
