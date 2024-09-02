@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SwalAlertsService } from '../services/swal-alerts.service';
 import { CommunicationService } from '../services/communication.service';
 import { ChatsMessagesService } from '../services/chatsMessages.service';
 import { CommonModule } from '@angular/common';
@@ -16,7 +15,7 @@ import {
   DragDropModule,
   CdkDragMove,
 } from '@angular/cdk/drag-drop';
-import {} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'lib-chatBotWidget',
@@ -26,11 +25,7 @@ import {} from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     ChatConversationComponent,
-    
-// TODO: `HttpClientModule` should not be imported into a component directly.
-// Please refactor the code to add `provideHttpClient()` call to the provider list in the
-// application bootstrap logic and remove the `HttpClientModule` import from this component.
-HttpClientModule,
+    HttpClientModule,
     DragDropModule,
   ],
   templateUrl: './chat-bot-widget.component.html',
@@ -61,7 +56,6 @@ export class ChatBotWidgetComponent implements OnInit {
   constructor(
     private communicationService: CommunicationService,
     private chatsMessages: ChatsMessagesService,
-    private swalAlertsService: SwalAlertsService
   ) {}
 
 
@@ -151,14 +145,7 @@ export class ChatBotWidgetComponent implements OnInit {
             this.chatsMessages.updateWhenSendMessage(message, response);
             this.updateHistorial();
             this.isUserSendingMessage = false;
-          },
-          error: (err) => {
-            if (err.status === 429) {
-              console.error(err.error.detail);
-              this.swalAlertsService.messageWhitTimerError(err.error.detail);
-            }
-            this.isUserSendingMessage = false;
-          },
+          }
         });
     } else if (this.formChat.valid) {
       const message = this.formChat.get('request')?.value;
@@ -176,13 +163,6 @@ export class ChatBotWidgetComponent implements OnInit {
           next: (response: any) => {
             this.chatsMessages.updateWhenSendMessage(message, response);
             this.updateHistorial();
-            this.isUserSendingMessage = false;
-          },
-          error: (err) => {
-            if (err.status === 429) {
-              console.error(err.error.detail);
-              this.swalAlertsService.messageWhitTimerError(err.error.detail);
-            }
             this.isUserSendingMessage = false;
           },
         });

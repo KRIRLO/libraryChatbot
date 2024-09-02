@@ -1,38 +1,32 @@
-
 <div class="col-start-1 col-end-12 rounded-lg">
-  @for (group of messagesGrouped; track $index) {
+  <!-- Iterar sobre messagesGrouped -->
+  <div *ngFor="let group of messagesGrouped; let i = index">
     <!-- Fecha -->
     <div class="sticky top-0 flex justify-center items-center py-2 px-4 rounded-lg z-10">
       <div class="bg-indigo-100 py-1 px-3 rounded-lg shadow-sm">
-        <span class="text-sm font-bold  text-black-600">
+        <span class="text-sm font-bold text-black-600">
           {{ group.date | date: 'fullDate' }}
         </span>
       </div>
     </div>
 
-    <!-- Mensajes -->
-    @for(message of group.messages; track $index){
-
-      <div class="flex flex-col space-y-2">
-        <!-- Mensaje del usuario a la izquierda -->
-        <div class="flex justify-start w-3/4">
-          <div *ngIf="message.sender === 'Bot'" class="ml-3  text-sm bg-blue-500 text-white py-2 px-4 shadow rounded-xl">
-            <p>{{ message.content }}</p>
-            <span class="text-xs text-gray-300">{{ message.timestamp | date: 'shortTime' }}</span>
-          </div>
+    <!-- Iterar sobre los mensajes del grupo -->
+    <div *ngFor="let message of group.messages; let j = index" class="flex flex-col space-y-2">
+      <!-- Mensaje del usuario a la izquierda -->
+      <div *ngIf="message.sender === 'Bot'" class="flex justify-start w-3/4">
+        <div class="ml-3 text-sm bg-blue-500 text-white py-2 px-4 shadow rounded-xl">
+          <p>{{ message.content }}</p>
+          <span class="text-xs text-gray-300">{{ message.timestamp | date: 'shortTime' }}</span>
         </div>
-
-        <!-- Mensaje del bot a la derecha -->
-        <div class="flex justify-end">
-          <div *ngIf="message.sender === 'Usuario'" class="w-3/4 max-w-max ml-auto mr-3 text-sm bg-gray-800 text-white py-2 px-4 shadow rounded-xl">
-            <p class="text-right">{{ message.content }}</p>
-            <span class="text-xs text-gray-400 text-right block">{{ message.timestamp | date: 'shortTime' }}</span>
-          </div>
-        </div>
-
       </div>
 
-    }
-  }
-
+      <!-- Mensaje del bot a la derecha -->
+      <div *ngIf="message.sender === 'Usuario'" class="flex justify-end">
+        <div class="w-3/4 max-w-max ml-auto mr-3 text-sm bg-gray-800 text-white py-2 px-4 shadow rounded-xl">
+          <p class="text-right">{{ message.content }}</p>
+          <span class="text-xs text-gray-400 text-right block">{{ message.timestamp | date: 'shortTime' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

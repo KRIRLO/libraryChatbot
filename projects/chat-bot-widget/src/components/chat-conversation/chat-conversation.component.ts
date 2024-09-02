@@ -3,17 +3,13 @@ import { CommonModule } from '@angular/common';
 import { GroupedMessages, Messages, SessionResponse } from '../../interfaces/chat';
 import { ChatService } from '../../services/chat_Id.service';
 import { ChatsMessagesService } from '../../services/chatsMessages.service';
-import {} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
   selector: 'app-chat-conversation',
   standalone: true,
-  imports: [CommonModule, 
-// TODO: `HttpClientModule` should not be imported into a component directly.
-// Please refactor the code to add `provideHttpClient()` call to the provider list in the
-// application bootstrap logic and remove the `HttpClientModule` import from this component.
-HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './chat-conversation.component.html',
 })
 export class ChatConversationComponent implements OnInit {
@@ -25,10 +21,11 @@ export class ChatConversationComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private chatsMessages: ChatsMessagesService
-    ) {}
+    private chatsMessages: ChatsMessagesService,
+  ) {}
 
   ngOnInit(): void {
+
     this.chatService.selectedChatId$.subscribe((chatId) => {
       this.selectedChatId = chatId;
 
@@ -38,6 +35,8 @@ export class ChatConversationComponent implements OnInit {
           this.messagesGrouped = this.groupMessagesByDate(messages);
       });
     });
+
+
   }
 
   groupMessagesByDate(messagesOriginal: SessionResponse[]): GroupedMessages[] {
@@ -100,19 +99,4 @@ export class ChatConversationComponent implements OnInit {
 
     return groupedMessages;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
