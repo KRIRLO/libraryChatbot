@@ -16,7 +16,7 @@ import {
   DragDropModule,
   CdkDragMove,
 } from '@angular/cdk/drag-drop';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 
 @Component({
   selector: 'lib-chatBotWidget',
@@ -26,7 +26,11 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     ChatConversationComponent,
-    HttpClientModule,
+    
+// TODO: `HttpClientModule` should not be imported into a component directly.
+// Please refactor the code to add `provideHttpClient()` call to the provider list in the
+// application bootstrap logic and remove the `HttpClientModule` import from this component.
+HttpClientModule,
     DragDropModule,
   ],
   templateUrl: './chat-bot-widget.component.html',

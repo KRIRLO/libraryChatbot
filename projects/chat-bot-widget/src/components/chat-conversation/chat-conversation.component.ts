@@ -3,13 +3,17 @@ import { CommonModule } from '@angular/common';
 import { GroupedMessages, Messages, SessionResponse } from '../../interfaces/chat';
 import { ChatService } from '../../services/chat_Id.service';
 import { ChatsMessagesService } from '../../services/chatsMessages.service';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 
 
 @Component({
   selector: 'app-chat-conversation',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, 
+// TODO: `HttpClientModule` should not be imported into a component directly.
+// Please refactor the code to add `provideHttpClient()` call to the provider list in the
+// application bootstrap logic and remove the `HttpClientModule` import from this component.
+HttpClientModule],
   templateUrl: './chat-conversation.component.html',
 })
 export class ChatConversationComponent implements OnInit {
