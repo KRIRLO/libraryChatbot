@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { GroupedMessages, Messages, SessionResponse } from '../../interfaces/chat';
 import { ChatService } from '../../services/chat_Id.service';
 import { ChatsMessagesService } from '../../services/chatsMessages.service';
-import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
@@ -11,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './chat-conversation.component.html',
+  styleUrl: './chat-conversation.component.css',
 })
 export class ChatConversationComponent implements OnInit {
   @Input() messages: SessionResponse[] = [];

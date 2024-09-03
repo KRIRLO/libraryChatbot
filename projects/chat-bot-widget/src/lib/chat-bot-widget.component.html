@@ -93,14 +93,14 @@
 
     <div class="p-4 flex-1 overflow-y-auto">
       <!-- Componente de conversación -->
-      <app-chat-conversation
+      <!-- <app-chat-conversation
         [messages]="messages"
         [isSendMessage]="isUserSendingMessage"
-      ></app-chat-conversation>
+      ></app-chat-conversation> -->
     </div>
 
     <div class="p-3 border-t border-secondary flex items-center">
-      <form (ngSubmit)="onSubmit()" [formGroup]="formChat" class="flex-grow flex">
+      <form [formGroup]="formChat" class="flex-grow flex">
         <input
           formControlName="request"
           type="text"
